@@ -1,16 +1,10 @@
 install.packages("ggplot2")
-install.packages("palmerpenguins")
 install.packages("tidyverse")
 install.packages("dplyr")
 library(ggplot2)
-library(palmerpenguins)
 library(dplyr)
 
-data(penguins)
-View(penguins)
 
-ggplot(data=penguins)+geom_point(mapping = aes(x=flipper_length_mm, y=body_mass_g))
-ggplot(data=penguins)+geom_point(mapping = aes(x=bill_length_mm, y=bill_depth_mm))
 
 #hotel bookings visualization
 
@@ -27,8 +21,12 @@ ggplot(data=hotel_bookings)+
 #Goal - increase weekend bookings (important source of revenue for hotel)
 #Question - what group of guests book the most weekend nights in order to target that group in a new marketing campaign
 
+ggplot(hotel_bookings) +
+  geom_point(mapping=aes(x=stays_in_weekend_nights, y=children)) +
+  geom_smooth(mapping=aes(x=stays_in_weekend_nights, y=children))
+
 ggplot(hotel_bookings) + 
-  geom_point(mapping=aes(x=stays_in_weekend_nights, y=children))
+  geom_smooth(mapping=aes(x=stays_in_weekend_nights, y=children, linetype=customer_type))
 
 hotel_summary_customer_type <-
   hotel_bookings %>% 
