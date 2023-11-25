@@ -28,7 +28,7 @@ ggplot(data=hotel_bookings)+
 #Question - what group of guests book the most weekend nights in order to target that group in a new marketing campaign
 
 ggplot(hotel_bookings) + 
-  geom_point(mapping=aes(x=stays_in_weekend_nights, y=market_segment))
+  geom_point(mapping=aes(x=stays_in_weekend_nights, y=children))
 
 hotel_summary_customer_type <-
   hotel_bookings %>% 
