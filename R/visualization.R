@@ -3,6 +3,7 @@ install.packages("tidyverse")
 install.packages("dplyr")
 library(ggplot2)
 library(dplyr)
+library(tidyverse)
 
 
 
@@ -83,3 +84,22 @@ ggplot(hotel_bookings)+
   geom_bar(mapping=aes(x=distribution_channel))+
   facet_grid(~deposit_type~market_segment)+
   theme(axis.text.x=element_text(angle=45))
+
+#Investigate which market segments generate the largest number of bookings, and where these
+#bookings are made (city hotels or resort hotels)
+
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=hotel))+
+  facet_wrap(~market_segment)
+
+#Show the relationship between lead time and guests traveling w/children for online bookings at city hotels
+#filter, then plot data
+
+onlineta_city_hotels <- filter(hotel_bookings,
+                               (hotel=="City Hotel" &
+                                  hotel_bookings$market_segment=="Online TA"))
+
+View(onlineta_city_hotels)
+
+ggplot(data = onlineta_city_hotels) +
+  geom_jitter(mapping = aes(x = lead_time, y = children))
