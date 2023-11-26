@@ -46,3 +46,40 @@ head(hotel_summary_children)
 
 #conclusion: Guests who have 1, or 2 children have the longest average weekend nights (1.09, 1.11 respectively)
 #we also found that customer type 'Contract' has a ~50% higher average weekend stay duration to other customer types
+
+
+#Goal - develop promotions based on different booking distributions
+#Figure out how many of the transactions are occurring for each different distribution type
+
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel, fill=distribution_channel))
+
+#dive deeper to figure out if the number of bookings for each distribution type is different
+#depending on whether or not there was a deposit of what market segment they represent
+
+#deposit type
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel, fill=deposit_type))
+
+#market segment
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel, fill=market_segment))
+
+#create separate charts for each deposit type and market segment to make it more clear
+#deposit type
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel))+
+  facet_wrap(~deposit_type)+
+  theme(axis.text.x=element_text(angle=45))
+
+#market segment
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel))+
+  facet_wrap(~market_segment)+
+  theme(axis.text.x=element_text(angle=45))
+
+#matrix of graphs regarding both
+ggplot(hotel_bookings)+
+  geom_bar(mapping=aes(x=distribution_channel))+
+  facet_grid(~deposit_type~market_segment)+
+  theme(axis.text.x=element_text(angle=45))
