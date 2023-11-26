@@ -102,4 +102,7 @@ onlineta_city_hotels <- filter(hotel_bookings,
 View(onlineta_city_hotels)
 
 ggplot(data = onlineta_city_hotels) +
-  geom_jitter(mapping = aes(x = lead_time, y = children))
+  geom_jitter(mapping = aes(x = lead_time, y = children))+
+  labs(title="Booking Lead Time", subtitle="Number of Children vs. Lead Time",
+       caption="Data collected from Coursera Hotel Bookings csv")+
+annotate("text",x=300, y=3,label="Guests without children have greater lead time",color="blue", fontface="bold",size=4)
