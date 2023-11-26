@@ -88,9 +88,16 @@ ggplot(hotel_bookings)+
 #Investigate which market segments generate the largest number of bookings, and where these
 #bookings are made (city hotels or resort hotels)
 
+#labels
+mindate <- min(hotel_bookings$arrival_date_year)
+maxdate <- max(hotel_bookings$arrival_date_year)
+
 ggplot(hotel_bookings)+
   geom_bar(mapping=aes(x=hotel))+
-  facet_wrap(~market_segment)
+  facet_wrap(~market_segment)+
+  labs(title="Market Segment vs Hotel", caption=paste0("Data from: ", mindate, " to ", maxdate), x="Hotel", y="Number of Bookings")
+
+ggsave('hotel_booking_chart.png')
 
 #Show the relationship between lead time and guests traveling w/children for online bookings at city hotels
 #filter, then plot data
@@ -106,3 +113,6 @@ ggplot(data = onlineta_city_hotels) +
   labs(title="Booking Lead Time", subtitle="Number of Children vs. Lead Time",
        caption="Data collected from Coursera Hotel Bookings csv")+
 annotate("text",x=300, y=3,label="Guests without children have greater lead time",color="blue", fontface="bold",size=4)
+
+
+
