@@ -20,12 +20,20 @@ ds_summary <- data.frame(
   sapply(datasets, FUN = function(x) {n_distinct(x[[1]])}),
   sapply(datasets, FUN = function(x) {sum(duplicated(x))})
 )
-names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplicated ID")
+names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplicated")
 
 ds_summary
-summary(datasets)
-skim_without_charts(datasets$dailyActivity)
-glimpse(datasets$dailyActivity)
+
+glimpse(datasets)
+
+ds_summary
+
+test = datasets$dailyActivity
+
+test$ActivityDate = as.POSIXct(activity$ActivityDate, format="%m/%d/%Y", tz=Sys.timezone())
+test$date <- format(test$ActivityDate, format="%m%d%Y")
+
+head(test)
 
 activity$ActivityDate=as.POSIXct(activity$ActivityDate, format="%m/%d/%Y", tz=Sys.timezone())
 activity$date <- format(activity$ActivityDate, format = "%m/%d/%y")
