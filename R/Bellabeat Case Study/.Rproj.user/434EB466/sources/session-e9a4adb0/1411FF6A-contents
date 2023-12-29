@@ -24,7 +24,18 @@ names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplic
 
 ds_summary
 
-glimpse(datasets)
+#duplicates in weightLogInfo - figure out where
+sapply(datasets$weightLogInfo, FUN = function(x) {sum(is.na(x))})
+
+#duplicates in Fat column
+datasets$weightLogInfo <- select(datasets$weightLogInfo, -Fat)
+datasets$weightLogInfo
+
+#duplicated in minuteSleep and sleepDay
+datasets$sleepDay <- unique(datasets$sleepDay)
+datasets$minuteSleep <- unique(datasets$minuteSleep) 
+
+datasets$sleepDay
 
 ds_summary
 
@@ -39,3 +50,18 @@ activity$ActivityDate=as.POSIXct(activity$ActivityDate, format="%m/%d/%Y", tz=Sy
 activity$date <- format(activity$ActivityDate, format = "%m/%d/%y")
 
 colnames(activity)
+
+ggplot(datasets$dailyActivity, mapping = aes(x = Calories, y = TotalSteps, color = Calories)) +
+  geom_point() +
+  geom_smooth(method = "loess") +
+  labs(title = "Total Steps vs Calories Burned", x = "Calories Burned") +
+  scale_color_gradient(low = "#3182bd", high = "#fc8d59")
+
+datasets$dailyActivity %>%  
+  select(TotalSteps,
+         TotalDistance,
+         VeryActiveMinutes,
+         FairlyActiveMinutes,
+         LightlyActiveMinutes,
+         SedentaryMinutes) %>%
+  summary()

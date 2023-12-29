@@ -24,7 +24,18 @@ names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplic
 
 ds_summary
 
-glimpse(datasets)
+#duplicates in weightLogInfo - figure out where
+sapply(datasets$weightLogInfo, FUN = function(x) {sum(is.na(x))})
+
+#duplicates in Fat column
+datasets$weightLogInfo <- select(datasets$weightLogInfo, -Fat)
+datasets$weightLogInfo
+
+#duplicated in minuteSleep and sleepDay
+datasets$sleepDay <- unique(datasets$sleepDay)
+datasets$minuteSleep <- unique(datasets$minuteSleep) 
+
+datasets$sleepDay
 
 ds_summary
 

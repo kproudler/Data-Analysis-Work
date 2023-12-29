@@ -3,7 +3,7 @@
     "path": "C:/Users/Kevin Proudler/OneDrive/coursera/Data Analytics/Data-Analysis-Work/R/visualization.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "3376073498",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1701541336396.0,
@@ -11,7 +11,9 @@
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "22,91",
+        "scrollLine": "0"
     },
     "folds": "",
     "lastKnownWriteTime": 1701010209,

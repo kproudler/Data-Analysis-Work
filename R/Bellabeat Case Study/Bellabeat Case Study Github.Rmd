@@ -1,12 +1,13 @@
 ---
-title: "Bellabeat Case Study"
-author: "Kevin Proudler"
-date: "`r Sys.Date()`"
-output: html_document
+title: "Bellabeat Case Study - Work in Progress"
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE)
 ```
 
 ## About
@@ -41,6 +42,7 @@ The data provided has been licensed by CC0: Public Domain, dataset made availabl
 ### Issues
 
 -User gender is not revealed in the data. As Bellabeat is a company focusing on creating health and wellness products for women, this may be an issue. Other personal data of the users that aren't included are their age, ethnicity, or location. This may be an issue when it comes to specificity of the analysis for Bellabeat's target market.
+
 -The sample size is of 30 users, over a short period of time. This shortcoming will make it difficult to ascertain long-term insights in to the users and their behavior.
 
 ## Data Cleaning
@@ -59,12 +61,70 @@ library(janitor)
 library(skimr)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+Loading all CSV files with health data into a list.
+```{r}
+file_list <- list.files(path = "Fitabase Data 4.12.16-5.12.16/", full.names = TRUE)
+datasets <- lapply(file_list, fread)
+names(datasets) <- gsub('.{11}$', '', basename(file_list))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Each file had been appended with "_merged.csv", which has been removed to ease referencing.
+
+In order to begin analyzing the data, I need to be able to understand what I'm working with. I will be creating a summary of the data files showing the number of columns and rows, how many N/A fields, distinct IDs, and duplicates are found in each.
+```{r}
+ds_summary <- data.frame(
+  sapply(datasets, nrow),
+  sapply(datasets, ncol),
+  sapply(datasets, FUN = function(x) {sum(is.na(x))}),
+  sapply(datasets, FUN = function(x) {n_distinct(x[[1]])}),
+  sapply(datasets, FUN = function(x) {sum(duplicated(x))})
+)
+names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplicated")
+
+ds_summary
+```
+
+-The summary indicates that most data sets have 33 Distinct IDs, other than *minuteSleep*, *heartrate_seconds*, *sleepDay*, and *weightLogInfo*.
+
+-There are also 2 data sets that have duplicated data: *minuteSleep*, and *sleepDay*. 
+
+-weightLogInfo is showing 65 NAs in the dataset. 
+
+```{r}
+sapply(datasets$weightLogInfo, FUN = function(x) {sum(is.na(x))})
+```
+
+-Upon further inspection, the NAs were all located within the column *Fat*. As there are a total of 67 rows in this data set, this column will not be useful with that much missing data.
+
+#### Next Steps
+
+-Remove duplicates from *minuteSleep* and *sleepDay*
+
+-Drop the *Fat* column from *weightLogInfo*
+
+```{r}
+datasets$weightLogInfo <- select(datasets$weightLogInfo, -Fat)
+datasets$sleepDay <- unique(datasets$sleepDay)
+datasets$minuteSleep <- unique(datasets$minuteSleep)
+
+ds_summary <- data.frame(
+  sapply(datasets, nrow),
+  sapply(datasets, ncol),
+  sapply(datasets, FUN = function(x) {sum(is.na(x))}),
+  sapply(datasets, FUN = function(x) {n_distinct(x[[1]])}),
+  sapply(datasets, FUN = function(x) {sum(duplicated(x))})
+)
+names(ds_summary) <- c("# Rows", "# Columns", "# NA", "# Distinct ID", "# Duplicated")
+ds_summary
+```
+
+
+## Analyzing the Data
+```{r, message = FALSE, warning=FALSE}
+ggplot(datasets$dailyActivity, mapping = aes(x = Calories, y = TotalSteps, color = Calories)) +
+  geom_point() +
+  geom_smooth(method = "loess") +
+  labs(title = "Total Steps vs Calories Burned", x = "Calories Burned") +
+  scale_color_gradient(low = "#3182bd", high = "#fc8d59")
+```
+

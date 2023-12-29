@@ -1,0 +1,5 @@
+"0","ggplot(datasets$dailyActivity, mapping = aes(x = Calories, y = TotalSteps, color = Calories)) +"
+"0","  geom_point() +"
+"0","  geom_smooth(method = ""loess"") +"
+"0","  labs(title = ""Total Steps vs Calories Burned"", x = ""Calories Burned"") +"
+"0","  scale_color_gradient(low = ""#3182bd"", high = ""#fc8d59"")"
